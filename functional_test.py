@@ -21,7 +21,7 @@ class NewVisionTest(unittest.TestCase):
         headr_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('To-Do', headr_text)
 
-        inputbox = self.browser.find_elements_by_id('id_new_item')
+        inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(
             inputbox.get_attribute('placeholder'),
             'Enter a to-do item'
@@ -30,10 +30,11 @@ class NewVisionTest(unittest.TestCase):
         inputbox.send_keys('Купить павлиньи перья')
         time.sleep(1)
 
-        table = self.browser.find_elements_by_id('id_list_table')
-        rows = table.find_elements_by_id('tr')
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == '1: Купить павлиньи перья' for row in rows)
+            any(row.text == '1: Купить павлиньи перья' for row in rows),
+            "Новый элемент списка не появился в таблице"
         )
         
         self.fail('Тест Закончен')
