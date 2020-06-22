@@ -1,9 +1,10 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
 import time
 
-class NewVisionTest(unittest.TestCase):
+class NewVisionTest(LiveServerTestCase):
 
     def setUp(self):
         '''установка'''
@@ -22,7 +23,7 @@ class NewVisionTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it_laster(self):
         '''Начало теста'''
 
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         self.assertIn('To-Do', self.browser.title)
         headr_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('To-Do', headr_text)
