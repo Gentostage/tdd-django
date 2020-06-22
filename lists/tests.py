@@ -26,22 +26,12 @@ class SomeTest(TestCase):
     def test_redirect_after_post(self):
         response = self.client.post('/', data={'item_text': 'A new list item'})
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'],'/lists/single-lice-in-world/')
     
     def test_only_saved_item_when_necessary(self):
         '''Сохраняет элементы только когда нужно'''
         self.client.get('/')
         self.assertEqual(Item.objects.count(), 0)
-
-    def test_display_all_list_items(self):
-        '''тест: отображения всех елементов'''
-        Item.objects.create(text='item 1')
-        Item.objects.create(text='item 2')
-
-        response = self.client.get('/')
-        
-        self.assertIn('item 1', response.content.decode())
-        self.assertIn('item 2', response.content.decode())
 
 
 class ItemModelTest(TestCase):
@@ -64,3 +54,24 @@ class ItemModelTest(TestCase):
         secomd_saved_item = saved_item[1]
         self.assertEqual(first_saved_item.text, 'The first (ever) list item')
         self.assertEqual(secomd_saved_item.text, 'Item the second')
+
+
+class ListViewTest(TestCase):
+    '''Тест предоставления списка'''
+
+    def test_uses_list_tempalte(self):
+        '''Тест на использованеи списка шаблона'''
+
+        response = self.client.get('/lists/single-lice-in-world/')
+        self.assertTemplateUsed(response, 'list.html')
+
+    def test_dispaly_all_items(self):
+        '''Тест на отабражения все элемента списка'''
+
+        Item.objects.create(text='item 1')
+        Item.objects.create(text='item 2')
+
+        response = self.client.get('/lists/single-lice-in-world/')
+
+        self.assertContains(response, 'item 1')
+        self.assertContains(response, 'item 2')
