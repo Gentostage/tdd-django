@@ -18,7 +18,7 @@ class NewVisionTest(LiveServerTestCase):
         '''Демонтаж'''
         self.browser.quit()
 
-    def wait_for_now_in_list_table(self, row_text):
+    def wait_for_row_in_list_table(self, row_text):
         '''Ожидание строки в таблице'''
         start_time = time.time()
         while True:
@@ -49,14 +49,14 @@ class NewVisionTest(LiveServerTestCase):
 
         inputbox.send_keys('Купить павлиньи перья')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_now_in_list_table('1: Купить павлиньи перья')
+        self.wait_for_row_in_list_table('1: Купить павлиньи перья')
 
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Сделать мушку из павлиньих перьев')
         inputbox.send_keys(Keys.ENTER)
 
-        self.wait_for_now_in_list_table('1: Купить павлиньи перья')
-        self.wait_for_now_in_list_table('2: Сделать мушку из павлиньих перьев')
+        self.wait_for_row_in_list_table('1: Купить павлиньи перья')
+        self.wait_for_row_in_list_table('2: Сделать мушку из павлиньих перьев')
         
         self.fail('Тест Закончен')
 
@@ -68,7 +68,7 @@ class NewVisionTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Купить павлиньи перья')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_now_in_list_table('1: Купить павлиньи перья')
+        self.wait_for_row_in_list_table('1: Купить павлиньи перья')
 
         edit_list_url = self.browser.current_url
         self.assertRegex(edit_list_url, '/lists/.+')
